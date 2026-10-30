@@ -3,6 +3,8 @@
 > [!IMPORTANT]
 > **Disclaimer:** This IT knowledge management tool has been designed as a proof of concept, a practical exercise to build and integrate **Python 3, FastAPI, Uvicorn, SQLite 3, SQLite FTS5 (BM25 lexical search), Scikit-Learn (TF-IDF & TruncatedSVD / Latent Semantic Analysis), NumPy, Reciprocal Rank Fusion (RRF), PyMuPDF, OOXML/Email/CSV document parsers, Cloudflare Workers (ES Modules), Cloudflare D1 (Serverless SQLite), Cloudflare Vectorize (768-dimension cosine vector index), Cloudflare Workers AI (`@cf/baai/bge-base-en-v1.5` embeddings & `@cf/meta/llama-3.3-70b-instruct-fp8-fast` LLM inference), Cloudflare v4 REST API & Wrangler, pluggable LLM APIs (Google Gemini, OpenAI, Anthropic, and local Ollama), HTML5 Canvas 2D force-directed graph physics, Vanilla JavaScript (ES6+) Single-Page Application (SPA), CSS3, HMAC-SHA256 session authentication, Docker, Docker Compose, and Linux systemd**. This is meant as a demonstration and should be used only for testing purposes.
 
+**All the demo platforms currently deployed and running under my main domain are not publicly accessible. Please, email me if you would like a live demo. Thank you.**
+
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](#part-1-local--self-hosted-installation)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](#part-1-local--self-hosted-installation)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%7C%20D1%20%7C%20Vectorize%20%7C%20AI-F38020?logo=cloudflare&logoColor=white)](#part-3-cloudflare-serverless-edge-deployment)

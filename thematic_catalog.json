@@ -1,0 +1,242 @@
+{
+  "generated_at": "2026-10-30T00:00:00Z",
+  "database_path": "./data/knowledge_base.db",
+  "stats": {
+    "file_status": {
+      "primary": {
+        "count": 12,
+        "mb": 0.04
+      }
+    },
+    "total_emails": 2,
+    "total_cmdb_records": 8,
+    "total_active_clients": 5
+  },
+  "themes": {
+    "Backup & Disaster Recovery (BCDR)": {
+      "count": 3,
+      "email_count": 1,
+      "sub_themes": {
+        "Veeam Backup & Replication": 2,
+        "Acronis Cyber Protect": 1,
+        "NAS & Storage Infrastructure": 1,
+        "Standard Operating Procedures (SOPs) & Tutorials": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Clients/ACME/ACME_Veeam_BDR_Retention_Runbook.docx",
+          "filename": "ACME_Veeam_BDR_Retention_Runbook.docx",
+          "ext": ".docx",
+          "client_code": "ACME",
+          "organization_name": "Acme Corporation",
+          "title": "Acme Corp — Veeam Backup & Disaster Recovery Runbook",
+          "preview": "Standard Operating Procedure for Acme Corporation (ACME) Veeam Backup & Replication v12."
+        },
+        {
+          "rel_path": "Documents/Clients/ACME/ACME_Acronis_Cloud_Cutover_Checklist.xlsx",
+          "filename": "ACME_Acronis_Cloud_Cutover_Checklist.xlsx",
+          "ext": ".xlsx",
+          "client_code": "ACME",
+          "organization_name": "Acme Corporation",
+          "title": "Acme Corp — Acronis Cyber Protect Cloud Cutover Schedule",
+          "preview": "Workload Inventory for ACME-DC01 and ACME-SQL01 daily image & cloud immutable backups."
+        }
+      ]
+    },
+    "Cybersecurity, Identity & Network Security": {
+      "count": 3,
+      "email_count": 1,
+      "sub_themes": {
+        "Firewalls, VPN & Perimeter (SonicWall/Cisco/OpenVPN)": 2,
+        "MFA, Zero-Trust & Identity Security": 2,
+        "Microsoft 365, Exchange Online & SharePoint": 1,
+        "EDR, MDR & Threat Hunting": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Clients/GLBX/GLBX_SonicWall_HA_VPN_Architecture.pdf",
+          "filename": "GLBX_SonicWall_HA_VPN_Architecture.pdf",
+          "ext": ".pdf",
+          "client_code": "GLBX",
+          "organization_name": "Globex Corporation",
+          "title": "Globex Corporation — SonicWall NSA 2700 High-Availability & SAML VPN Design",
+          "preview": "Active/Standby HA pair on WAN 198.51.100.10/29 with VLAN segmentation and SAML MFA."
+        },
+        {
+          "rel_path": "Documents/Clients/STRK/STRK_M365_Conditional_Access_GDAP_Baseline.pdf",
+          "filename": "STRK_M365_Conditional_Access_GDAP_Baseline.pdf",
+          "ext": ".pdf",
+          "client_code": "STRK",
+          "organization_name": "Stark Industries",
+          "title": "Stark Industries — Microsoft 365 Zero-Trust Conditional Access & DMARC/DKIM Baseline",
+          "preview": "Phishing-resistant FIDO2 MFA enforcement, legacy auth block, and GDAP least-privilege roles."
+        }
+      ]
+    },
+    "Cloud, Virtualization & Core Infrastructure": {
+      "count": 2,
+      "email_count": 0,
+      "sub_themes": {
+        "VMware vSphere, ESXi & vCenter": 1,
+        "Microsoft Azure & Cloud Infrastructure": 1,
+        "Linux, Docker & SQL Databases": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Clients/INIT/INIT_VMware_vSphere8_Cluster_Upgrade_Plan.md",
+          "filename": "INIT_VMware_vSphere8_Cluster_Upgrade_Plan.md",
+          "ext": ".md",
+          "client_code": "INIT",
+          "organization_name": "Initech Systems",
+          "title": "Initech Systems — VMware vCenter 8.0U3 & ESXi Rolling Host Upgrade Plan",
+          "preview": "Pre-flight validation with vSphere Lifecycle Manager (vLCM) and rolling vMotion evacuation."
+        },
+        {
+          "rel_path": "Documents/Clients/WAYN/WAYN_Azure_Virtual_WAN_ExpressRoute_SOP.docx",
+          "filename": "WAYN_Azure_Virtual_WAN_ExpressRoute_SOP.docx",
+          "ext": ".docx",
+          "client_code": "WAYN",
+          "organization_name": "Wayne Enterprises",
+          "title": "Wayne Enterprises — Azure Virtual WAN & BGP Site-to-Site Failover Runbook",
+          "preview": "Architecture and failover testing procedure for Azure Virtual WAN hub in East US 2."
+        }
+      ]
+    },
+    "RMM, Automation & Endpoint Management": {
+      "count": 1,
+      "email_count": 0,
+      "sub_themes": {
+        "PowerShell, Bash & CLI Scripting": 1,
+        "Certificates, Encryption & BitLocker": 1,
+        "Active Directory & Group Policy": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Scripting/Invoke-BitLockerKeyEscrowAudit.ps1",
+          "filename": "Invoke-BitLockerKeyEscrowAudit.ps1",
+          "ext": ".ps1",
+          "client_code": "INIT",
+          "organization_name": "Initech Systems",
+          "title": "PowerShell Automation — BitLocker Recovery Key Escrow & AD Verification",
+          "preview": "Checks system volume encryption status via Get-BitLockerVolume and escrows recovery keys."
+        }
+      ]
+    },
+    "MSP Operations, NOC & Service Delivery": {
+      "count": 1,
+      "email_count": 0,
+      "sub_themes": {
+        "Standard Operating Procedures (SOPs) & Tutorials": 1,
+        "Centralized Services & NOC Operations": 1,
+        "PSA & Service Management": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Internal/NOC_Alert_Triage_And_Escalation_Matrix_SOP.docx",
+          "filename": "NOC_Alert_Triage_And_Escalation_Matrix_SOP.docx",
+          "ext": ".docx",
+          "client_code": "",
+          "organization_name": "",
+          "title": "Global NOC — RMM Alert Triage, Backup Verification & Escalation Matrix SOP",
+          "preview": "Defines P1/P2/P3 SLA response targets, automated alert deduplication, and BCDR verification."
+        }
+      ]
+    },
+    "Documentation & CMDB Configuration Management": {
+      "count": 1,
+      "email_count": 0,
+      "sub_themes": {
+        "Documentation Exports & Runbooks": 1,
+        "Licensing, Domains & Asset Inventory": 1,
+        "Automated Documentation": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Internal/CMDB_Quarterly_Asset_Reconciliation_Guide.md",
+          "filename": "CMDB_Quarterly_Asset_Reconciliation_Guide.md",
+          "ext": ".md",
+          "client_code": "",
+          "organization_name": "",
+          "title": "CMDB Configuration Management — Quarterly Asset & SSL/Domain Expiration Audit",
+          "preview": "Standard workflow for reconciling Automated Documentation inspection data with CMDB items."
+        }
+      ]
+    },
+    "Training, Certifications & Professional Notes": {
+      "count": 1,
+      "email_count": 0,
+      "sub_themes": {
+        "Technical Certifications (Acronis, CompTIA, Web/JS)": 1,
+        "Linux, Docker & SQL Databases": 1
+      },
+      "docs_and_scripts": [
+        {
+          "rel_path": "Documents/Trainings/Cloud_Security_And_Kubernetes_Architecture_Notes.md",
+          "filename": "Cloud_Security_And_Kubernetes_Architecture_Notes.md",
+          "ext": ".md",
+          "client_code": "",
+          "organization_name": "",
+          "title": "Engineering Study Notes — Container Hardening, Zero-Trust Networking & AZ-104",
+          "preview": "Reference notes covering rootless Docker containers, Linux netfilter, and Azure RBAC PIM."
+        }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "client_code": "ACME",
+      "organization_name": "Acme Corporation",
+      "org_type": "Client",
+      "org_status": "Active",
+      "file_count": 3,
+      "cmdb_config_count": 2,
+      "cmdb_contact_count": 2,
+      "cmdb_backup_count": 1,
+      "cmdb_server_count": 1
+    },
+    {
+      "client_code": "GLBX",
+      "organization_name": "Globex Corporation",
+      "org_type": "Client",
+      "org_status": "Active",
+      "file_count": 2,
+      "cmdb_config_count": 2,
+      "cmdb_contact_count": 2,
+      "cmdb_backup_count": 1,
+      "cmdb_server_count": 1
+    },
+    {
+      "client_code": "INIT",
+      "organization_name": "Initech Systems",
+      "org_type": "Client",
+      "org_status": "Active",
+      "file_count": 2,
+      "cmdb_config_count": 2,
+      "cmdb_contact_count": 2,
+      "cmdb_backup_count": 1,
+      "cmdb_server_count": 1
+    },
+    {
+      "client_code": "WAYN",
+      "organization_name": "Wayne Enterprises",
+      "org_type": "Client",
+      "org_status": "Active",
+      "file_count": 1,
+      "cmdb_config_count": 1,
+      "cmdb_contact_count": 1,
+      "cmdb_backup_count": 1,
+      "cmdb_server_count": 1
+    },
+    {
+      "client_code": "STRK",
+      "organization_name": "Stark Industries",
+      "org_type": "Client",
+      "org_status": "Active",
+      "file_count": 1,
+      "cmdb_config_count": 1,
+      "cmdb_contact_count": 1,
+      "cmdb_backup_count": 1,
+      "cmdb_server_count": 1
+    }
+  ]
+}

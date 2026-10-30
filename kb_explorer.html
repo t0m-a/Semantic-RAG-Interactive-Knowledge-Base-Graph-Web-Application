@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Knowledge Base — Thematic Explorer (Sample Dataset)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --card: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --border: #475569;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 24px; }
+  header { margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  h1 { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 4px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .stat-lbl { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab-btn { background: var(--panel); color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  .tab-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+  .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; background: var(--panel); padding: 14px; border-radius: 8px; border: 1px solid var(--border); }
+  input, select { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; }
+  input { flex: 1; min-width: 260px; }
+  .results-info { color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
+  .item-list { display: grid; gap: 10px; }
+  .item-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .item-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .item-title { font-weight: 600; color: var(--accent); font-size: 1rem; word-break: break-all; }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+  .badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: var(--card); color: var(--text); }
+  .badge.theme { background: #1e3a8a; color: #bfdbfe; }
+  .badge.client { background: #065f46; color: #a7f3d0; }
+  .item-path { font-family: monospace; font-size: 0.8rem; color: var(--muted); word-break: break-all; }
+  .item-prev { font-size: 0.85rem; color: #cbd5e1; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  th { background: var(--card); color: var(--accent); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Enterprise Semantic RAG Knowledge Base — Static Explorer</h1>
+  <div class="subtitle">Sample Fabricated Dataset • Portable SQLite + FTS5 Database: <code>./data/knowledge_base.db</code></div>
+</header>
+
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-val" id="statTotalFiles">12</div><div class="stat-lbl">Sample Artifacts</div></div>
+  <div class="stat-card"><div class="stat-val" id="statPrimaryFiles">12</div><div class="stat-lbl">Primary Unique Files</div></div>
+  <div class="stat-card"><div class="stat-val" id="statEmails">2</div><div class="stat-lbl">Sample Emails (.eml)</div></div>
+  <div class="stat-card"><div class="stat-val" id="statCmdb">8</div><div class="stat-lbl">Sample CMDB Records</div></div>
+  <div class="stat-card"><div class="stat-val" id="statClients">5</div><div class="stat-lbl">Sample Organizations</div></div>
+  <div class="stat-card"><div class="stat-val" id="statThemes">7</div><div class="stat-lbl">Core Thematic Domains</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('explorer')">Search & Filter Knowledge Base</button>
+  <button class="tab-btn" onclick="showTab('themes')">Thematic Taxonomy Overview</button>
+  <button class="tab-btn" onclick="showTab('clients')">Sample Organizations (5)</button>
+  <button class="tab-btn" onclick="showTab('cmdb')">Sample CMDB Tables (8)</button>
+</div>
+
+<div id="tab-explorer">
+  <div class="controls">
+    <input type="text" id="qInput" placeholder="Search sample dataset by keyword, filename, technology (e.g. Veeam, SonicWall, BitLocker, VMware, ACME...)" oninput="renderItems()">
+    <select id="themeSelect" onchange="renderItems()"><option value="">All Thematic Domains</option></select>
+    <select id="clientSelect" onchange="renderItems()"><option value="">All Organizations</option></select>
+    <select id="extSelect" onchange="renderItems()"><option value="">All Formats</option></select>
+  </div>
+  <div class="results-info" id="resultsInfo"></div>
+  <div class="item-list" id="itemList"></div>
+</div>
+
+<div id="tab-themes" class="hidden">
+  <table id="themesTable">
+    <thead><tr><th>Thematic Domain</th><th>Total Items</th><th>Docs & Scripts</th><th>Emails</th><th>Sub-Themes & Counts</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="tab-clients" class="hidden">
+  <table id="clientsTable">
+    <thead><tr><th>Code</th><th>Organization Name</th><th>Status</th><th>Archive Files</th><th>CMDB Configs</th><th>CMDB Backups</th><th>CMDB Servers</th><th>CMDB Contacts</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="tab-cmdb" class="hidden">
+  <table id="cmdbTable">
+    <thead><tr><th>CMDB Table</th><th>Sample Records</th><th>Distinct Organizations</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+const ITEMS = [
+  {
+    "p": "Documents/Clients/ACME/ACME_Veeam_BDR_Retention_Runbook.docx",
+    "n": "ACME_Veeam_BDR_Retention_Runbook.docx",
+    "e": ".docx",
+    "f": "Documents",
+    "t": "Backup & Disaster Recovery (BCDR)",
+    "st": ["Veeam Backup & Replication", "NAS & Storage Infrastructure", "Standard Operating Procedures (SOPs) & Tutorials"],
+    "c": "ACME",
+    "o": "Acme Corporation",
+    "ti": "Acme Corp — Veeam Backup & Disaster Recovery Runbook",
+    "pr": "Standard Operating Procedure for Acme Corporation (ACME) Veeam Backup & Replication v12. Primary BDR appliance ACME-VEEAM01 replicates nightly to immutable cloud object storage with a 14-day local restore window and 12-month GFS archival policy."
+  },
+  {
+    "p": "Documents/Clients/ACME/ACME_Acronis_Cloud_Cutover_Checklist.xlsx",
+    "n": "ACME_Acronis_Cloud_Cutover_Checklist.xlsx",
+    "e": ".xlsx",
+    "f": "Documents",
+    "t": "Backup & Disaster Recovery (BCDR)",
+    "st": ["Acronis Cyber Protect", "Microsoft Azure & Cloud Infrastructure"],
+    "c": "ACME",
+    "o": "Acme Corporation",
+    "ti": "Acme Corp — Acronis Cyber Protect Cloud Cutover Schedule",
+    "pr": "=== Sheet: Workload Inventory === Hostname | OS | Policy | Storage Quota | ACME-DC01 | Windows Server 2022 | Daily Image + Cloud Immutable | 1.5 TB | ACME-SQL01 | Windows Server 2022 | Application-Aware SQL Backup | 2.0 TB"
+  },
+  {
+    "p": "Documents/Clients/GLBX/GLBX_SonicWall_HA_VPN_Architecture.pdf",
+    "n": "GLBX_SonicWall_HA_VPN_Architecture.pdf",
+    "e": ".pdf",
+    "f": "Documents",
+    "t": "Cybersecurity, Identity & Network Security",
+    "st": ["Firewalls, VPN & Perimeter (SonicWall/Cisco/OpenVPN)", "MFA, Zero-Trust & Identity Security"],
+    "c": "GLBX",
+    "o": "Globex Corporation",
+    "ti": "Globex Corporation — SonicWall NSA 2700 High-Availability & SAML VPN Design",
+    "pr": "[PDF Pages: 6] --- Page 1/6 --- Globex Corporation Perimeter Firewall Cutover & SSL-VPN SAML MFA Integration. Active/Standby HA pair on WAN 198.51.100.10/29 with VLAN segmentation for Corporate (VLAN 10), Voice (VLAN 20), and Guest (VLAN 99)."
+  },
+  {
+    "p": "Documents/Scripting/Invoke-BitLockerKeyEscrowAudit.ps1",
+    "n": "Invoke-BitLockerKeyEscrowAudit.ps1",
+    "e": ".ps1",
+    "f": "Documents",
+    "t": "RMM, Automation & Endpoint Management",
+    "st": ["PowerShell, Bash & CLI Scripting", "Certificates, Encryption & BitLocker", "Active Directory & Group Policy"],
+    "c": "INIT",
+    "o": "Initech Systems",
+    "ti": "PowerShell Automation — BitLocker Recovery Key Escrow & AD Verification",
+    "pr": "Checks system volume encryption status via Get-BitLockerVolume, enables XtsAes256 protection if unencrypted, and escrows the 48-digit RecoveryPassword protector to Active Directory and Microsoft Entra ID."
+  },
+  {
+    "p": "Documents/Clients/INIT/INIT_VMware_vSphere8_Cluster_Upgrade_Plan.md",
+    "n": "INIT_VMware_vSphere8_Cluster_Upgrade_Plan.md",
+    "e": ".md",
+    "f": "Documents",
+    "t": "Cloud, Virtualization & Core Infrastructure",
+    "st": ["VMware vSphere, ESXi & vCenter", "Linux, Docker & SQL Databases"],
+    "c": "INIT",
+    "o": "Initech Systems",
+    "ti": "Initech Systems — VMware vCenter 8.0U3 & ESXi Rolling Host Upgrade Plan",
+    "pr": "Pre-flight validation with vSphere Lifecycle Manager (vLCM), STS certificate expiration check (checksts.py), rolling vMotion host evacuation across INIT-ESX01..03, and VMXNET3 driver verification."
+  },
+  {
+    "p": "Documents/Clients/WAYN/WAYN_Azure_Virtual_WAN_ExpressRoute_SOP.docx",
+    "n": "WAYN_Azure_Virtual_WAN_ExpressRoute_SOP.docx",
+    "e": ".docx",
+    "f": "Documents",
+    "t": "Cloud, Virtualization & Core Infrastructure",
+    "st": ["Microsoft Azure & Cloud Infrastructure", "Firewalls, VPN & Perimeter (SonicWall/Cisco/OpenVPN)"],
+    "c": "WAYN",
+    "o": "Wayne Enterprises",
+    "ti": "Wayne Enterprises — Azure Virtual WAN & BGP Site-to-Site Failover Runbook",
+    "pr": "Architecture and failover testing procedure for Wayne Enterprises (WAYN) Azure Virtual WAN hub in East US 2 with dual IPsec BGP tunnels and automated Recovery Services Vault replication."
+  },
+  {
+    "p": "Documents/Clients/STRK/STRK_M365_Conditional_Access_GDAP_Baseline.pdf",
+    "n": "STRK_M365_Conditional_Access_GDAP_Baseline.pdf",
+    "e": ".pdf",
+    "f": "Documents",
+    "t": "Cybersecurity, Identity & Network Security",
+    "st": ["Microsoft 365, Exchange Online & SharePoint", "MFA, Zero-Trust & Identity Security", "EDR, MDR & Threat Hunting"],
+    "c": "STRK",
+    "o": "Stark Industries",
+    "ti": "Stark Industries — Microsoft 365 Zero-Trust Conditional Access & DMARC/DKIM Baseline",
+    "pr": "[PDF Pages: 8] Phishing-resistant FIDO2 MFA enforcement, legacy authentication block, GDAP least-privilege role assignments, Dropsuite SaaS mailbox journaling, and MDR endpoint agent deployment."
+  },
+  {
+    "p": "Documents/Internal/NOC_Alert_Triage_And_Escalation_Matrix_SOP.docx",
+    "n": "NOC_Alert_Triage_And_Escalation_Matrix_SOP.docx",
+    "e": ".docx",
+    "f": "Documents",
+    "t": "MSP Operations, NOC & Service Delivery",
+    "st": ["Standard Operating Procedures (SOPs) & Tutorials", "Centralized Services & NOC Operations", "PSA & Service Management"],
+    "c": "",
+    "o": "",
+    "ti": "Global NOC — RMM Alert Triage, Backup Verification & Escalation Matrix SOP",
+    "pr": "Defines P1/P2/P3 SLA response targets, automated alert deduplication workflows, nightly BCDR screenshot verification checks, and on-call engineering escalation procedures."
+  },
+  {
+    "p": "Documents/Internal/CMDB_Quarterly_Asset_Reconciliation_Guide.md",
+    "n": "CMDB_Quarterly_Asset_Reconciliation_Guide.md",
+    "e": ".md",
+    "f": "Documents",
+    "t": "Documentation & CMDB Configuration Management",
+    "st": ["Documentation Exports & Runbooks", "Licensing, Domains & Asset Inventory", "Automated Documentation"],
+    "c": "",
+    "o": "",
+    "ti": "CMDB Configuration Management — Quarterly Asset & SSL/Domain Expiration Audit",
+    "pr": "Standard workflow for reconciling Automated Documentation inspection data with CMDB configuration items, tracking SSL/TLS certificate renewals, and verifying hardware lifecycle warranty dates."
+  },
+  {
+    "p": "Documents/Trainings/Cloud_Security_And_Kubernetes_Architecture_Notes.md",
+    "n": "Cloud_Security_And_Kubernetes_Architecture_Notes.md",
+    "e": ".md",
+    "f": "Documents",
+    "t": "Training, Certifications & Professional Notes",
+    "st": ["Technical Certifications (Acronis, CompTIA, Web/JS)", "Linux, Docker & SQL Databases"],
+    "c": "",
+    "o": "",
+    "ti": "Engineering Study Notes — Container Hardening, Zero-Trust Networking & AZ-104",
+    "pr": "Reference notes covering rootless Docker containers, Linux netfilter/nftables isolation, PostgreSQL WAL archiving, and Azure RBAC PIM role elevation."
+  },
+  {
+    "p": "Emails/Client/ACME_Veeam_Restore_Verification.eml",
+    "n": "ACME_Veeam_Restore_Verification.eml",
+    "e": ".eml",
+    "f": "Emails",
+    "t": "Backup & Disaster Recovery (BCDR)",
+    "st": ["Veeam Backup & Replication", "PSA & Service Management"],
+    "c": "ACME",
+    "o": "Acme Corporation",
+    "ti": "Completed Quarterly Veeam SureBackup DR Test for ACME-DC01",
+    "pr": "Subject: Completed Quarterly Veeam SureBackup DR Test | From: noc@example.com | To: it-stakeholders@acme.example.com | All 4 production VMs passed isolated sandbox boot, AD DS heartbeat, and SQL consistency checks in 14m 22s."
+  },
+  {
+    "p": "Emails/Client/GLBX_SonicWall_Firmware_Maintenance.eml",
+    "n": "GLBX_SonicWall_Firmware_Maintenance.eml",
+    "e": ".eml",
+    "f": "Emails",
+    "t": "Cybersecurity, Identity & Network Security",
+    "st": ["Firewalls, VPN & Perimeter (SonicWall/Cisco/OpenVPN)", "PSA & Service Management"],
+    "c": "GLBX",
+    "o": "Globex Corporation",
+    "ti": "Scheduled SonicOS 7.1 HA Maintenance Window Confirmation",
+    "pr": "Subject: SonicOS 7.1 HA Maintenance | From: netops@example.com | To: infra@globex.example.com | Secondary HA unit GLBX-FW02 upgraded and synchronized; stateful failover verified with zero packet loss."
+  }
+];
+
+const THEMES = {
+  "Backup & Disaster Recovery (BCDR)": {
+    "count": 3,
+    "email_count": 1,
+    "sub_themes": {
+      "Veeam Backup & Replication": 2,
+      "Acronis Cyber Protect": 1,
+      "NAS & Storage Infrastructure": 1,
+      "Standard Operating Procedures (SOPs) & Tutorials": 1
+    }
+  },
+  "Cybersecurity, Identity & Network Security": {
+    "count": 3,
+    "email_count": 1,
+    "sub_themes": {
+      "Firewalls, VPN & Perimeter (SonicWall/Cisco/OpenVPN)": 2,
+      "MFA, Zero-Trust & Identity Security": 2,
+      "Microsoft 365, Exchange Online & SharePoint": 1,
+      "EDR, MDR & Threat Hunting": 1
+    }
+  },
+  "Cloud, Virtualization & Core Infrastructure": {
+    "count": 2,
+    "email_count": 0,
+    "sub_themes": {
+      "VMware vSphere, ESXi & vCenter": 1,
+      "Microsoft Azure & Cloud Infrastructure": 1,
+      "Linux, Docker & SQL Databases": 1
+    }
+  },
+  "RMM, Automation & Endpoint Management": {
+    "count": 1,
+    "email_count": 0,
+    "sub_themes": {
+      "PowerShell, Bash & CLI Scripting": 1,
+      "Certificates, Encryption & BitLocker": 1,
+      "Active Directory & Group Policy": 1
+    }
+  },
+  "MSP Operations, NOC & Service Delivery": {
+    "count": 1,
+    "email_count": 0,
+    "sub_themes": {
+      "Standard Operating Procedures (SOPs) & Tutorials": 1,
+      "Centralized Services & NOC Operations": 1,
+      "PSA & Service Management": 1
+    }
+  },
+  "Documentation & CMDB Configuration Management": {
+    "count": 1,
+    "email_count": 0,
+    "sub_themes": {
+      "Documentation Exports & Runbooks": 1,
+      "Licensing, Domains & Asset Inventory": 1,
+      "Automated Documentation": 1
+    }
+  },
+  "Training, Certifications & Professional Notes": {
+    "count": 1,
+    "email_count": 0,
+    "sub_themes": {
+      "Technical Certifications (Acronis, CompTIA, Web/JS)": 1,
+      "Linux, Docker & SQL Databases": 1
+    }
+  }
+};
+
+const CLIENTS = [
+  {"client_code": "ACME", "organization_name": "Acme Corporation", "org_type": "Client", "org_status": "Active", "file_count": 3, "cmdb_config_count": 2, "cmdb_contact_count": 2, "cmdb_backup_count": 1, "cmdb_server_count": 1},
+  {"client_code": "GLBX", "organization_name": "Globex Corporation", "org_type": "Client", "org_status": "Active", "file_count": 2, "cmdb_config_count": 2, "cmdb_contact_count": 2, "cmdb_backup_count": 1, "cmdb_server_count": 1},
+  {"client_code": "INIT", "organization_name": "Initech Systems", "org_type": "Client", "org_status": "Active", "file_count": 2, "cmdb_config_count": 2, "cmdb_contact_count": 2, "cmdb_backup_count": 1, "cmdb_server_count": 1},
+  {"client_code": "WAYN", "organization_name": "Wayne Enterprises", "org_type": "Client", "org_status": "Active", "file_count": 1, "cmdb_config_count": 1, "cmdb_contact_count": 1, "cmdb_backup_count": 1, "cmdb_server_count": 1},
+  {"client_code": "STRK", "organization_name": "Stark Industries", "org_type": "Client", "org_status": "Active", "file_count": 1, "cmdb_config_count": 1, "cmdb_contact_count": 1, "cmdb_backup_count": 1, "cmdb_server_count": 1}
+];
+
+const CMDB = [
+  {"source_table": "configurations", "record_count": 1, "org_count": 1},
+  {"source_table": "server-s", "record_count": 1, "org_count": 1},
+  {"source_table": "backup", "record_count": 1, "org_count": 1},
+  {"source_table": "firewall-auto", "record_count": 1, "org_count": 1},
+  {"source_table": "lan", "record_count": 1, "org_count": 1},
+  {"source_table": "active-directory", "record_count": 1, "org_count": 1},
+  {"source_table": "domains", "record_count": 1, "org_count": 1},
+  {"source_table": "ssl-certificates", "record_count": 1, "org_count": 1}
+];
+
+function init() {
+  const tSel = document.getElementById('themeSelect');
+  Object.keys(THEMES).sort().forEach(t => {
+    const o = document.createElement('option'); o.value = t; o.textContent = `${t} (${THEMES[t].count})`; tSel.appendChild(o);
+  });
+  const cSel = document.getElementById('clientSelect');
+  CLIENTS.filter(c => c.file_count > 0).forEach(c => {
+    const o = document.createElement('option'); o.value = c.client_code; o.textContent = `${c.client_code} — ${c.organization_name} (${c.file_count})`; cSel.appendChild(o);
+  });
+  const exts = [...new Set(ITEMS.map(i => i.e))].sort();
+  const eSel = document.getElementById('extSelect');
+  exts.forEach(e => {
+    const o = document.createElement('option'); o.value = e; o.textContent = e; eSel.appendChild(o);
+  });
+
+  // Populate Themes table
+  const tBody = document.querySelector('#themesTable tbody');
+  Object.entries(THEMES).sort((a,b) => b[1].count - a[1].count).forEach(([k, v]) => {
+    const subs = Object.entries(v.sub_themes).sort((a,b)=>b[1]-a[1]).map(([sk,sv])=>`${sk} (${sv})`).join(' • ');
+    tBody.innerHTML += `<tr><td><strong>${k}</strong></td><td>${v.count}</td><td>${v.count - v.email_count}</td><td>${v.email_count}</td><td>${subs}</td></tr>`;
+  });
+
+  // Populate Clients table
+  const cBody = document.querySelector('#clientsTable tbody');
+  CLIENTS.forEach(c => {
+    cBody.innerHTML += `<tr><td><strong>${c.client_code}</strong></td><td>${c.organization_name}</td><td>${c.org_status}</td><td>${c.file_count}</td><td>${c.cmdb_config_count}</td><td>${c.cmdb_backup_count}</td><td>${c.cmdb_server_count}</td><td>${c.cmdb_contact_count}</td></tr>`;
+  });
+
+  // Populate CMDB table
+  const mBody = document.querySelector('#cmdbTable tbody');
+  CMDB.forEach(m => {
+    mBody.innerHTML += `<tr><td><code>${m.source_table}</code></td><td>${m.record_count.toLocaleString()}</td><td>${m.org_count}</td></tr>`;
+  });
+
+  renderItems();
+}
+
+function showTab(name) {
+  ['explorer', 'themes', 'clients', 'cmdb'].forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('hidden', t !== name);
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', ['explorer', 'themes', 'clients', 'cmdb'][idx] === name);
+  });
+}
+
+function renderItems() {
+  const q = document.getElementById('qInput').value.toLowerCase().trim();
+  const th = document.getElementById('themeSelect').value;
+  const cl = document.getElementById('clientSelect').value;
+  const ex = document.getElementById('extSelect').value;
+
+  const filtered = ITEMS.filter(i => {
+    if (th && i.t !== th) return false;
+    if (cl && i.c !== cl) return false;
+    if (ex && i.e !== ex) return false;
+    if (q) {
+      const hay = `${i.p} ${i.ti} ${i.t} ${i.st.join(' ')} ${i.c} ${i.o} ${i.pr}`.toLowerCase();
+      return hay.includes(q);
+    }
+    return true;
+  });
+
+  document.getElementById('resultsInfo').textContent = `Showing ${Math.min(filtered.length, 150)} of ${filtered.length} matching items`;
+  const list = document.getElementById('itemList');
+  list.innerHTML = filtered.slice(0, 150).map(i => `
+    <div class="item-card">
+      <div class="item-head">
+        <div class="item-title">${i.ti || i.n}</div>
+        <span class="badge">${i.e}</span>
+      </div>
+      <div class="badges">
+        <span class="badge theme">${i.t}</span>
+        ${i.st.map(s => `<span class="badge">${s}</span>`).join('')}
+        ${i.c ? `<span class="badge client">${i.c}: ${i.o}</span>` : ''}
+      </div>
+      <div class="item-path">${i.p}</div>
+      ${i.pr ? `<div class="item-prev">${i.pr}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+init();
+</script>
+</body>
+</html>

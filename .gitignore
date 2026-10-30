@@ -1,0 +1,38 @@
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Databases & Local ML Models (keep repository clean of user data)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.pkl
+*.npz
+
+# User Ingested Data & Uploads (preserve folder structure via README.md)
+data/uploads/*
+data/ingest/*
+!data/ingest/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Node / Cloudflare Wrangler
+node_modules/
+.wrangler/
+dist/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

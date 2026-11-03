@@ -3,8 +3,6 @@
 > [!IMPORTANT]
 > **Disclaimer:** This IT knowledge management tool has been designed as a proof of concept, a practical exercise to build and integrate **Python 3, FastAPI, Uvicorn, SQLite 3, SQLite FTS5 (BM25 lexical search), Scikit-Learn (TF-IDF & TruncatedSVD / Latent Semantic Analysis), NumPy, Reciprocal Rank Fusion (RRF), PyMuPDF, OOXML/Email/CSV document parsers, Cloudflare Workers (ES Modules), Cloudflare D1 (Serverless SQLite), Cloudflare Vectorize (768-dimension cosine vector index), Cloudflare Workers AI (`@cf/baai/bge-base-en-v1.5` embeddings & `@cf/meta/llama-3.3-70b-instruct-fp8-fast` LLM inference), Cloudflare v4 REST API & Wrangler, pluggable LLM APIs (Google Gemini, OpenAI, Anthropic, and local Ollama), HTML5 Canvas 2D force-directed graph physics, Vanilla JavaScript (ES6+) Single-Page Application (SPA), CSS3, HMAC-SHA256 session authentication, Docker, Docker Compose, and Linux systemd**. This is meant as a demonstration and should be used only for testing purposes.
 
-**All the demo platforms currently deployed and running under my main domain are not publicly accessible. Please, email me if you would like a live demo. Thank you.**
-
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](#part-1-local--self-hosted-installation)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](#part-1-local--self-hosted-installation)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%7C%20D1%20%7C%20Vectorize%20%7C%20AI-F38020?logo=cloudflare&logoColor=white)](#part-3-cloudflare-serverless-edge-deployment)
@@ -21,25 +19,32 @@ This repository supports **two interchangeable deployment targets** out of the b
 
 ## Table of Contents
 
-1. [System Architecture](#system-architecture)
-2. [Core Capabilities](#core-capabilities)
-3. [Vendor-Agnostic Thematic Taxonomy](#vendor-agnostic-thematic-taxonomy)
-4. [Repository Structure](#repository-structure)
-5. [Part 1: Local & Self-Hosted Installation](#part-1-local--self-hosted-installation)
+1. [Web UI Illustration](#web-ui-illustration)
+2. [System Architecture](#system-architecture)
+3. [Core Capabilities](#core-capabilities)
+4. [Vendor-Agnostic Thematic Taxonomy](#vendor-agnostic-thematic-taxonomy)
+5. [Repository Structure](#repository-structure)
+6. [Part 1: Local & Self-Hosted Installation](#part-1-local--self-hosted-installation)
    - [Option A: Native Python (Windows / macOS / Linux)](#option-a-native-python-windows--macos--linux)
    - [Option B: Docker Compose Deployment](#option-b-docker-compose-deployment)
    - [Option C: Automated Debian / Ubuntu Systemd Deployment](#option-c-automated-debian--ubuntu-systemd-deployment)
-6. [Part 2: Data Ingestion & Database Management](#part-2-data-ingestion--database-management)
-7. [Part 3: Cloudflare Serverless Edge Deployment](#part-3-cloudflare-serverless-edge-deployment)
+7. [Part 2: Data Ingestion & Database Management](#part-2-data-ingestion--database-management)
+8. [Part 3: Cloudflare Serverless Edge Deployment](#part-3-cloudflare-serverless-edge-deployment)
    - [Step 1: Create a Cloudflare API Token](#step-1-create-a-cloudflare-api-token)
    - [Step 2: Export Local Data to D1 SQL Migrations (Optional)](#step-2-export-local-data-to-d1-sql-migrations-optional)
    - [Step 3A: One-Command Automated REST Deployment (`deploy_cloudflare.py`)](#step-3a-one-command-automated-rest-deployment-deploy_cloudflarepy)
    - [Step 3B: Manual Deployment via Wrangler CLI](#step-3b-manual-deployment-via-wrangler-cli)
    - [Step 4: Build Edge Vectorize Embeddings](#step-4-build-edge-vectorize-embeddings)
    - [Step 5: Protect with Cloudflare Zero Trust Access (Recommended)](#step-5-protect-with-cloudflare-zero-trust-access-recommended)
-8. [Configuration & Environment Variables](#configuration--environment-variables)
-9. [REST API Reference](#rest-api-reference)
-10. [License](#license)
+9. [Configuration & Environment Variables](#configuration--environment-variables)
+10. [REST API Reference](#rest-api-reference)
+11. [License](#license)
+
+---
+
+## Web UI Illustration
+
+![Web UI Illustration](KB-illustration.png)
 
 ---
 
